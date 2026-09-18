@@ -179,7 +179,6 @@ ggplot(hikes, aes(x = elevation)) +
 ```
 
 
-
 ## Exercise 7: A Histogram of Elevation
 
 Quantitative variables require different viz than categorical variables. Especially when there are many possible outcomes of the quantitative variable. It's typically insufficient to simply count up the number of times we've observed a particular outcome as the bar graph did above. It gives us a sense of ranges and typical outcomes, but not a good sense of how the observations are distributed across this range. We'll explore two methods for graphing quantitative variables: **histograms** and **density plots**.
@@ -199,13 +198,13 @@ Let's dig into some details.
 
 Now the bigger picture. In general, histograms allow us to examine the following properties of a *quantitative* variable:
 
--   **typical outcome:** Where’s the center of the data points? What's typical? --> ~a little under 4500
+-   **typical outcome:** Where’s the center of the data points? What's typical? 
 -   **variability & range:** How spread out are the outcomes? What are the max and min outcomes?
 -   **shape:** How are values distributed along the observed range? Is the distribution symmetric, right-skewed, left-skewed, bi-modal, or uniform (flat)?
 -   **outliers:** Are there any outliers, ie, outcomes that are unusually large/small?
 
 We must then *translate* this information into the *context* of our analysis, here hikes in the Adirondacks. Addressing each of the features in the above list, summarize below what you learned from the histogram, in context.
-
+- our Adirondacks data shows that the typical elevation is ~4250 feet elevation. The spread is pretty even with the max being a little under 5500 elevation and minimum is a little over 2000. The shape is pretty left skewed with no particular outliers. 
 
 
 ## Exercise 8: Building Histograms - Part 1
@@ -213,7 +212,8 @@ We must then *translate* this information into the *context* of our analysis, he
 2-MINUTE CHALLENGE: Thinking of the bar chart code, try to *intuit* what line you can tack on to the below frame of `elevation` to add a histogram layer. Don't forget a `+`. If it doesn't come to you within 2 minutes, *no problem* -- all will be revealed in the next exercise.
 
 ```{r}
-ggplot(hikes, aes(x = elevation))
+ggplot(hikes, aes(x = elevation)) +
+  geom_histogram()
 ```
 
 
@@ -222,46 +222,46 @@ ggplot(hikes, aes(x = elevation))
 Let's build some histograms. Try each chunk below, *one by one*. In each chunk, make a comment about how both the code and the corresponding plot both changed.
 
 ```{r}
-# COMMENT on the change in the code and the corresponding change in the plot
+# we changed the graph into a histogram from a bar chart
 ggplot(hikes, aes(x = elevation)) +
   geom_histogram()
 ```
 
 ```{r}
-# COMMENT on the change in the code and the corresponding change in the plot
+# the border color is now white
 ggplot(hikes, aes(x = elevation)) +
   geom_histogram(color = "white") 
 ```
 
 ```{r}
-# COMMENT on the change in the code and the corresponding change in the plot
+# the fill color is now blue
 ggplot(hikes, aes(x = elevation)) +
   geom_histogram(color = "white", fill = "blue") 
 ```
 
 ```{r}
-# COMMENT on the change in the code and the corresponding change in the plot
+# added proper axes labels
 ggplot(hikes, aes(x = elevation)) +
   geom_histogram(color = "white") +
   labs(x = "Elevation (feet)", y = "Number of hikes")
 ```
 
 ```{r}
-# COMMENT on the change in the code and the corresponding change in the plot
+# changed the binwidth to 1000, simplifying the categories into 2 sections
 ggplot(hikes, aes(x = elevation)) +
   geom_histogram(color = "white", binwidth = 1000) +
   labs(x = "Elevation (feet)", y = "Number of hikes")
 ```
 
 ```{r}
-# COMMENT on the change in the code and the corresponding change in the plot
+# bin width is now 5, so we have LOTS of lines for different hike variables
 ggplot(hikes, aes(x = elevation)) +
   geom_histogram(color = "white", binwidth = 5) +
   labs(x = "Elevation (feet)", y = "Number of hikes")
 ```
 
 ```{r}
-# COMMENT on the change in the code and the corresponding change in the plot
+# this seems like the best bin width which givces a better distribution 
 ggplot(hikes, aes(x = elevation)) +
   geom_histogram(color = "white", binwidth = 200) +
   labs(x = "Elevation (feet)", y = "Number of hikes")
@@ -270,12 +270,12 @@ ggplot(hikes, aes(x = elevation)) +
 
 ## Exercise 10: Histogram Follow-up
 
--   What function added the histogram layer / geometry?
--   What's the difference between `color` and `fill`?
--   Why does adding `color = "white"` improve the visualization?
--   What did `binwidth` do?
--   Why does the histogram become ineffective if the `binwidth` is too big (eg, 1000 feet)?
--   Why does the histogram become ineffective if the `binwidth` is too small (eg, 5 feet)?
+-   What function added the histogram layer / geometry? --> geom_histogram()
+-   What's the difference between `color` and `fill`? --> color does the border, fill does the fill color
+-   Why does adding `color = "white"` improve the visualization? --> distinguishes the bars from the background
+-   What did `binwidth` do? --> change the width of each bar 
+-   Why does the histogram become ineffective if the `binwidth` is too big (eg, 1000 feet)? --> groups them too much 
+-   Why does the histogram become ineffective if the `binwidth` is too small (eg, 5 feet)? --> too many individual ones 
 
 
 ## Exercise 11: Density Plots
@@ -293,23 +293,46 @@ ggplot(hikes, aes(x = elevation)) +
 
 -   INTUITION CHECK: Before tweaking the code and thinking back to `geom_bar()` and `geom_histogram()`, how do you *anticipate* the following code will change the plot?
 
-    -   `geom_density(color = "blue")`
-    -   `geom_density(fill = "orange")`
+    -   `geom_density(color = "blue")` --> line will be blue 
+    -   `geom_density(fill = "orange")` --> under the curve will be orange 
 
 -   TRY IT! Test out those lines in the chunk below. Was your intuition correct?
 
 ```{r}
 # Write your code here
-
+ggplot(hikes, aes(x = elevation)) +
+  geom_density(color = "blue", fill = "orange")
 ```
 
 -   Examine the density plot. How does it compare to the histogram? What does it tell you about the *typical* elevation, *variability / range* in elevations, and *shape* of the distribution of *elevations* within this range?
+
+the density plot simplifies so we are just looking at the trend of the curve. it's still left skewed, the range is the same and distribution is pretty standard. 
 
 
 
 ## Exercise 12: Density Plots vs Histograms
 
 The histogram and density plot both allow us to visualize the behavior of a quantitative variable: typical outcome, variability / range, shape, and outliers. What are the pros/cons of each? What do you like/not like about each?
+
+**density plot**
+pro
+simplified 
+smoother
+
+con
+simplified
+no counts 
+less specific 
+
+**histogram**
+pro 
+specific 
+shows the counts 
+
+con
+depending on the bin width less or more readable
+
+
 
 
 ## Exercise 13: Code = communication

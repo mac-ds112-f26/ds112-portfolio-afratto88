@@ -38,8 +38,9 @@ elevation variable?
 We'll address the above questions using `ggplot` tools. Try running the following chunk and simply take note of the error message -- this is one you'll get a lot!
 
 ```{r}
+
 # Use the ggplot function
-ggplot(hikes, aes(x = rating))
+#ggplot(hikes, aes(x = rating))
 
 # Error in ggplot(hikes, aes(x = rating)) : 
  # could not find function "ggplot"
@@ -342,9 +343,9 @@ We *obviously* won't be done until we talk about communication. All code above h
 ```{r}
 #| eval: false
 
-ggplot(___, aes(x = ___)) + 
-  geom___(color = "___", fill = "___") + 
-  labs(x = "___", y = "___")
+#ggplot(___, aes(x = ___)) + 
+#  geom___(color = "___", fill = "___") + 
+#  labs(x = "___", y = "___")
 ```
 
 -   Though not *necessary* to the code working, it's common, good practice to *indent* or *tab* the lines of code after the first line (counterexample below). Why?
@@ -372,10 +373,10 @@ Practice your viz skills to learn about some of the variables in one of the foll
 
 ```{r}
 # Data on students in this class
-survey <- read.csv("../data/survey.csv")
+#survey <- read.csv("../data/survey.csv")
 
 # World Cup data
-world_cup <- read.csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-11-29/worldcups.csv")
+#world_cup <- read.csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-11-29/worldcups.csv")
 ```
 
 #### Part b

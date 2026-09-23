@@ -255,7 +255,7 @@ We can also visualize the relationship between `repub_pct_20` and `historical` u
 ![](https://mac-stat.github.io/images/112/density_demo.png){width="50%"}
 
 ```{r}
-ggplot(elections, aes(x = repub_pct_20)) +
+ggplot(elections, aes(x = repub_pct_20, fill = historical)) +
   geom_density()
 ```
 
@@ -268,6 +268,9 @@ Work through the chunks below and address the comments therein.
 # Name two "bad" things about this plot
 ggplot(elections, aes(x = repub_pct_20, fill = historical)) +
   geom_density()
+
+# bad thing 1: the colors don't match the parties, and they overlap too much and we can't see where they overlap, we need it to be more opaque 
+# bad thing 2: the y axis is very vague
 ```
 
 ```{r}
@@ -275,6 +278,8 @@ ggplot(elections, aes(x = repub_pct_20, fill = historical)) +
 ggplot(elections, aes(x = repub_pct_20, fill = historical)) +
   geom_density() +
   scale_fill_manual(values = c("blue", "purple", "red"))
+
+# this makes the colors match the parties
 ```
 
 ```{r}
@@ -283,6 +288,8 @@ ggplot(elections, aes(x = repub_pct_20, fill = historical)) +
 ggplot(elections, aes(x = repub_pct_20, fill = historical)) +
   geom_density(alpha = 0.5) +
   scale_fill_manual(values = c("blue", "purple", "red"))
+
+# alpha changes the opacity so we can see where the full layers start and finish 
 ```
 
 ```{r}
@@ -291,7 +298,10 @@ ggplot(elections, aes(x = repub_pct_20, fill = historical)) +
   geom_density() +
   scale_fill_manual(values = c("blue", "purple", "red")) +
   facet_wrap(~historical)
+
+# facet wrap generates differnt plots/graphs for each party 
 ```
+
 
 ```{r}
 # Let's try a similar grouping strategy with a histogram instead of density plot.
@@ -299,6 +309,8 @@ ggplot(elections, aes(x = repub_pct_20, fill = historical)) +
 ggplot(elections, aes(x = repub_pct_20, fill = historical)) +
   geom_histogram(color = "white") +
   scale_fill_manual(values = c("blue", "purple", "red"))
+
+#this creates a stacked histogram in one plot 
 ```
 
 
@@ -306,9 +318,9 @@ ggplot(elections, aes(x = repub_pct_20, fill = historical)) +
 
 We've now learned 3 (of many) ways to visualize the relationship between a quantitative and categorical variable: side-by-side violins, boxplots, and density plots.
 
--   Which do you like best?
--   What is one pro of density plots relative to boxplots?
--   What is one con of density plots relative to boxplots?
+-   Which do you like best? -->  I like the boxplots, it gives the most information (max/min/outliers/diff percentiles)
+-   What is one pro of density plots relative to boxplots? --> density plots show more overlap between groups
+-   What is one con of density plots relative to boxplots? --> you can't really see the specifics, it's more of a trend (less able to see statistical significance) 
 
 
 ## Exercise 11: Categorical vs Categorical: Intuition Check
@@ -327,14 +339,14 @@ Spend at most 5 minutes on the following intuition check. Adjust the code below 
 
 ```{r}
 # Plot 1: adjust this to recreate the top plot
-ggplot(elections, aes(x = historical)) +
+ggplot(elections, aes(x = historical, fill = winner_20)) +
   geom_bar()
 ```
 
 ```{r}
 # Plot 2: adjust this to recreate the bottom plot
 ggplot(elections, aes(x = winner_20)) +
-  geom_bar()
+  geom_bar() + facet_wrap(~historical)
 ```
 
 
@@ -347,6 +359,8 @@ Construct the following 4 bar plot visualizations.
 # How are the "historical" and "winner_20" variables mapped to the plot, i.e. what roles do they play?
 ggplot(elections, aes(x = historical, fill = winner_20)) +
   geom_bar()
+
+#historical shows the x axes and fill defines the colors of the winners democrat/republican
 ```
 
 ```{r}
@@ -374,9 +388,15 @@ ggplot(elections, aes(x = historical, fill = winner_20)) +
 
 Name one pro and one con of using the "proportional bar plot" instead of one of the other three options.
 
+pro: can visualize the split evenly between the different categories
+
+con: not to scale, in the side by side one, you can clearly see that red has the highest count compared to blue, but proportional you cannot see the count 
+
 #### Part b
 
 What's your favorite bar plot from part and why?
+
+I like the stacked plot the most becasue it's the easiest to interpret through comparison and count and it's to scale! 
 
 
 ## Exercise 13: Optional Practice

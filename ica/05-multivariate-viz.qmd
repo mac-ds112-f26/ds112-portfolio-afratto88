@@ -139,13 +139,15 @@ Make a trivariate visualization that demonstrates the relationship of `sat` with
 Does it still seem that SAT scores decrease as spending increases?
 
 ```{r}
-
+ggplot(education, aes(x = sat, y = expend, color = fracCat)) + 
+  geom_point()
 ```
 
 ### ✏️ Explain Simpson's Paradox
 
 Putting all of this together, explain this example of **Simpson’s Paradox**. That is, why did it appear that SAT scores decrease as spending increases even though the *opposite* is true?
 
+simpson's paradox refers to the opposite of an expected trend. this makes sense because you'd think spending more results in higher scores, but actually, the more you spend --> the ROI of SAT score decreases. 
 
 
 ## Heat Maps & Star Plots (Optional)
@@ -235,6 +237,8 @@ In the final two plots, the states (rows) are rearranged by similarity with resp
 
 Putting this all together, what insight do you gain about the education trends across U.S. states? Which states are similar? In what ways are they similar? Are there any outliers with respect to 1 or more of the education metrics?
 
+utah and cali stand out the most with a differnt ratio compared to the others. generally, the heat maps show states are about the same, but that new york and new jersey have the highest expend rates 
+
 
 
 ### ✏️ Build Star Plot
@@ -274,5 +278,7 @@ stars(plot_data,
   key.loc = c(-110, 28),
   cex = 1, 
   draw.segments = TRUE
+  
+  # this shows the geographic concentraion of each state based on where it's located 
 )
 ```

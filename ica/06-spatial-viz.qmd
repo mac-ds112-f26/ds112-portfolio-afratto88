@@ -339,16 +339,16 @@ Adjust the code below to make the plot!
 Remove the `#` to run it.
 
 ```{r}
-# ggplot(___) + 
-#   geom___() + 
-#   geom___(
-#     data = ___,
-#     aes(x = ___, y = ___),
-#     alpha = 0.7,
-#     size = 0.2, 
-#     color = 'darkgreen'
-#   ) + 
-#   theme_map()
+ggplot(midwest_boundaries) + 
+   geom___() + 
+   geom___(
+     data = ___,
+     aes(x = ___, y = ___),
+     alpha = 0.7,
+     size = 0.2, 
+     color = 'darkgreen'
+   ) + 
+   theme_map()
 ```
 
 ### ✏️ Build Contour Maps

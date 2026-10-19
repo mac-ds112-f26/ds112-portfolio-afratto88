@@ -382,26 +382,40 @@ avg_births_month |>
 In 1988, calculate the total number of births per week in each state. Get rid of week "53", which isn't a complete week! Then, make a line plot of births by week for each state and comment on what you learn. For example, do you notice any seasonal trends? Are these the same in every state? Any outliers?
 
 ```{r}
-avg_births_month <- daily_births |> 
-  group_by(month_day) |> 
-  summarize(avg_births = mean(total, na.rm = TRUE), .groups = "drop")
+weekly_births_1988 <- Birthdays |>
+  filter(year == 1988) |>
+  mutate(week = week(date)) |>
+  filter(week != 53) |>
+  group_by(state, week) |>
+  summarize(totalBirths = sum(births))
 
-avg_births_month |> 
-  ggplot(aes(x = month_day, y = avg_births)) + 
-    geom_point() +
-    geom_line() + 
-    theme_minimal() + 
-    labs(titlw = "Average US Births by Month (1969-1988)", x ="Month", y = "Avg. Monthly Births")
+ggplot(weekly_births_1988, aes(x = week, y = totalBirths, group = state)) +
+  geom_line() +
+  theme_classic() +
+  labs(x = "Week # of 1988", y = "Total Births",
+       title = "Weekly Births by State from 1988")
 ```
+Births tend to peek around week 40 and 50, with the lowest births around week 15. I am curious as to which state is the highest followed by the other two in the middle hitting about 6000 births. Perhaps these reflect larger states such as New York, Texas, Florida, and California. 
 
 ### ✏️ Compare MN & LA
 
 Repeat the above for just Minnesota (MN) and Louisiana (LA). MN has one of the coldest climates and LA has one of the warmest. How do their seasonal trends compare? Do you think these trends are similar in other colder and warmer states? Try it!
 
 ```{r}
+weekly_births_MN_LA <- Birthdays |>
+  filter(year == 1988, state %in% c("MN", "LA")) |>
+  mutate(week = week(date)) |>
+  filter(week != 53) |>
+  group_by(state, week) |>
+  summarize(totalBirths = sum(births))
 
+ggplot(weekly_births_MN_LA, aes(x = week, y = totalBirths, color = state)) +
+  geom_line() +
+  theme_classic() +
+  labs(x = "Week # of 1988", y = "Total Births", color = "State",
+       title = "Weekly Births in MN and LA, 1988")
 ```
-
+Birthdays peak in the summer and decrease in the spring. LA births are higher than MN except in the spring interestingly. Both states have births drop at the end of the year, and then increase in Janurary!
 
 
 ### ✏️ Sort MA Births
@@ -409,7 +423,9 @@ Repeat the above for just Minnesota (MN) and Louisiana (LA). MN has one of the c
 Create a dataset with only births in Massachusetts (MA) in 1979 and sort the days from those with the most births to those with the fewest.
 
 ```{r}
-
+MA_births <- Birthdays |>
+  filter(year == 1979, state =="MA") |>
+  arrange(desc(births))
 ```
 
 ### ✏️ Find Top 5 States
@@ -417,5 +433,9 @@ Create a dataset with only births in Massachusetts (MA) in 1979 and sort the day
 Make a table showing the five states with the most births between September 9, 1979 and September 12, 1979, including the 9th and 12th. Arrange the table in descending order of births.
 
 ```{r}
-
+most_sept_births <- Birthdays |> 
+  date = numeric(date) |> 
+  filter(date <= "1969-09-12", date >= "1979-09-09") |> 
+  arrange(desc(births)) |> 
+  head(5)
 ```

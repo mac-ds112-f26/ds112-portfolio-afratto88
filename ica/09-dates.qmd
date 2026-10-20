@@ -426,6 +426,8 @@ Create a dataset with only births in Massachusetts (MA) in 1979 and sort the day
 MA_births <- Birthdays |>
   filter(year == 1979, state =="MA") |>
   arrange(desc(births))
+
+head(MA_births)
 ```
 
 ### ✏️ Find Top 5 States
@@ -433,9 +435,10 @@ MA_births <- Birthdays |>
 Make a table showing the five states with the most births between September 9, 1979 and September 12, 1979, including the 9th and 12th. Arrange the table in descending order of births.
 
 ```{r}
+library(lubridate)
 most_sept_births <- Birthdays |> 
-  date = numeric(date) |> 
-  filter(date <= "1969-09-12", date >= "1979-09-09") |> 
+  filter(date >= as.Date("1979-09-09"), date <= as.Date("1979-09-12")) |> 
+  group_by(state) |> 
+  summarize(births = sum(births)) |> 
   arrange(desc(births)) |> 
-  head(5)
 ```

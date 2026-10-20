@@ -182,8 +182,8 @@ elections_small |>
 ```{r}
 # You try
 # Define a variable that calculates the change in Dem support in 2020 vs 2016
-elections_small |>
-  mutate(dem_support_change = dem_pct_20 - dem_pct_16) |>
+elections_small|>
+  mutate(dem_support_change = dem_pct_20 - dem_pct_16) |> 
   head()
 ```
 

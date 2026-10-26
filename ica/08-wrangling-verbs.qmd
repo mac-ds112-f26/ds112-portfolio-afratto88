@@ -276,13 +276,11 @@ BEFORE trying, what do you think will happen if you change the order of mutate a
 
 # switching these two will result in an error, we can’t select a variable before we define it!
 
-elections_small |>
-  filter(state_name == "Delaware") |>
-  select(county_name, repub_pct_20, dem_pct_20, repub_win_20)
-  mutate(repub_win_20 = repub_pct_20 > dem_pct_20) |>
-
+# elections_small |>
+#   filter(state_name == "Delaware") |>
+#   select(county_name, repub_pct_20, dem_pct_20, repub_win_20) |> 
+#   mutate(repub_win_20 = repub_pct_20 > dem_pct_20)
 ```
-
 
 
 ### ✏️ Show MN Dem Votes

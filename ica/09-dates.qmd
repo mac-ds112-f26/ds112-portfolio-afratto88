@@ -440,5 +440,5 @@ most_sept_births <- Birthdays |>
   filter(date >= as.Date("1979-09-09"), date <= as.Date("1979-09-12")) |> 
   group_by(state) |> 
   summarize(births = sum(births)) |> 
-  arrange(desc(births)) |> 
+  arrange(desc(births))
 ```

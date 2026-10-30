@@ -10,6 +10,10 @@ title: "Join"
 Define two new datasets, with different students and courses:
 
 ```{r}
+
+library(tidyverse)
+
+
 students_2 <- data.frame(
   student = c("D", "E", "F"),
   class = c("COMP 101", "BIOL 101", "POLI 101")
@@ -34,6 +38,8 @@ To connect the course enrollments to the students' courses, try to do a `left_jo
 
 students_2 |>
   left_join(enrollments_2)
+
+# could not find the function left_join
 ```
 
 ### ✏️ Specify Join Keys
@@ -86,6 +92,8 @@ Try doing a `left_join()` to link the students' classes to their enrollment info
 ```{r}
 students_3 |>
   left_join(enrollments_3)
+
+# this gets rid of the enrollment count and changes them all to NA 
 ```
 
 ### ✏️ Interpret `grade.x` & `grade.y`
@@ -95,6 +103,10 @@ The issue here is that our datasets have *2* column names in common: `class` and
 ```{r}
 students_3 |>
   left_join(enrollments_3, join_by(class == class))
+
+# grade.x is the individual student's grade, from students_3 (the first/left dataset)
+
+# grade.y is the average grade for that class, from enrollments_3 (the second/right dataset)
 ```
 
 
@@ -123,15 +135,16 @@ contact
 
 Use the appropriate join for each prompt below. In each case, think before you type:
 
--   What dataset goes on the left?
--   What do you want the resulting dataset to look like? How many rows and columns will it have?
+-   What dataset goes on the left? --> voters 
+-   What do you want the resulting dataset to look like? How many rows and columns will it have? --> 7 rows, 4 columns
 
 ### ✏️ Find Non-Voters
 
 We want contact info for people who HAVEN'T voted.
 
 ```{r}
-
+contact |>
+  anti_join(voters, join_by(name == id))
 ```
 
 
@@ -140,7 +153,8 @@ We want contact info for people who HAVEN'T voted.
 We want contact info for people who HAVE voted.
 
 ```{r}
-
+contact |>
+  semi_join(voters, join_by(name == id))
 ```
 
 
@@ -149,7 +163,8 @@ We want contact info for people who HAVE voted.
 We want any data available on each person.
 
 ```{r}
-
+contact |>
+  full_join(voters, join_by(name == id))
 ```
 
 
@@ -158,9 +173,9 @@ We want any data available on each person.
 When possible, we want to add contact info to the voting roster.
 
 ```{r}
-
+voters |>
+  left_join(contact, join_by(id == name))
 ```
-
 
 
 ## Grades & Courses
@@ -198,10 +213,10 @@ Use R code to take a quick glance at the data.
 
 ```{r}
 # How many observations (rows) and variables (columns) are there in the grades data?
-
+dim(grades)
 
 # How many observations (rows) and variables (columns) are there in the courses data?
-
+dim(courses)
 
 ```
 
@@ -229,36 +244,42 @@ courses |>
 For our class size exploration, obtain the *total* enrollments in each `sessionID`, combining any cross-listed sections. Save this as `courses_combined`. NOTE: There's no joining to do here!
 
 ```{r}
-# courses_combined <- courses |>
-#   ___(sessionID) |>
-#   ___(enroll = sum(___))
+courses_combined <- courses |>
+  group_by(sessionID) |>
+  summarize(enroll = sum(enroll))
 
 # Check that this has 1695 rows and 2 columns
-# dim(courses_combined)
+dim(courses_combined)
 ```
 
 ### ✏️ Compute Median Class Size
 
 Let's first examine the question of class size from the *administration*'s viewpoint. To this end, calculate the median class size across all class sections. (The median is the *middle* or 50th percentile. Unlike the *mean*, it's not skewed by outliers.) THINK FIRST:
 
--   Which of the 2 datasets do you need to answer this question? One? Both?
--   If you need course information, use `courses_combined` not `courses`.
--   Do you have to do any joining? If so, which dataset will go on the left, i.e. which dataset includes your primary observations of interest? Which join function will you need?
+-   Which of the 2 datasets do you need to answer this question? One? Both? --> both
+-   If you need course information, use `courses_combined` not `courses`. 
+-   Do you have to do any joining? If so, which dataset will go on the left, i.e. which dataset includes your primary observations of interest? Which join function will you need? --> no joining, we just need the median function 
 
 ```{r}
-
+courses_combined |>
+  summarize(median(enroll))
 ```
 
 ### ✏️ Compute Student Class Size
 
 But how big are classes from the student perspective? To this end, calculate the median class size for each individual student. Once you have the correct output, store it as `student_class_size`. THINK FIRST:
 
--   Which of the 2 datasets do you need to answer this question? One? Both?
--   If you need course information, use `courses_combined` not `courses`.
--   Do you have to do any joining? If so, which dataset will go on the left, i.e. which dataset includes your primary observations of interest? Which join function will you need?
+-   Which of the 2 datasets do you need to answer this question? One? Both? --> both 
+-   If you need course information, use `courses_combined` not `courses`. --> combined 
+-   Do you have to do any joining? If so, which dataset will go on the left, i.e. which dataset includes your primary observations of interest? Which join function will you need? --> yes we need to left_join courses_combined 
 
 ```{r}
+student_class_size <- grades |>
+  left_join(courses_combined) |>
+  group_by(sid) |>
+  summarize(med_class = median(enroll))
 
+head(student_class_size)
 ```
 
 ### ✏️ Plot Student Class Sizes
@@ -266,8 +287,9 @@ But how big are classes from the student perspective? To this end, calculate the
 The median class size varies from student to student. To get a sense for the typical student experience and range in student experiences, construct and discuss a histogram of the median class sizes experienced by the students.
 
 ```{r}
-# ggplot(student_class_size, aes(x = ___)) +
-#   geom___()
+ggplot(student_class_size, aes(x = med_class)) +
+  geom_histogram(color = "pink") + 
+  theme_classic()
 ```
 
 
@@ -277,7 +299,8 @@ The median class size varies from student to student. To get a sense for the typ
 Show data on the students that enrolled in `session1986`. THINK FIRST: Which of the 2 datasets do you need to answer this question? One? Both?
 
 ```{r}
-
+grades |>
+  filter(sessionID == "session1986")
 ```
 
 ### ✏️ Find Dept E Students
@@ -292,7 +315,8 @@ dept_E <- courses |>
 What students enrolled in classes in department E? (We just want info on the students, not the classes.)
 
 ```{r}
-
+grades |>
+  semi_join(dept_E)
 ```
 
 
@@ -318,7 +342,10 @@ gpa_conversion
 How many total student enrollments are there in each department? Order from high to low.
 
 ```{r}
-
+courses |>
+  group_by(dept) |>
+  summarize(total = sum(enroll)) |>
+  arrange(desc(total))
 ```
 
 ### ✏️ Compute Student GPA
@@ -326,7 +353,10 @@ How many total student enrollments are there in each department? Order from high
 What's the grade-point average (GPA) for each student?
 
 ```{r}
-
+grades |>
+  left_join(gpa_conversion) |>
+  group_by(sid) |>
+  summarize(gpa = mean(gp, na.rm = TRUE))
 ```
 
 ### ✏️ Compute Median GPA
@@ -334,7 +364,11 @@ What's the grade-point average (GPA) for each student?
 What's the median GPA across all students?
 
 ```{r}
-
+grades |>
+  left_join(gpa_conversion) |>
+  group_by(sid) |>
+  summarize(gpa = mean(gp, na.rm = TRUE)) |>
+  summarize(median(gpa))
 ```
 
 ### ✏️ Find Grades Below B+
@@ -342,7 +376,11 @@ What's the median GPA across all students?
 What fraction of grades are below B+?
 
 ```{r}
-
+# There are lots of approaches here!
+grades |>
+  left_join(gpa_conversion) |>
+  mutate(below_b_plus = (gp < 3.3)) |>
+  summarize(mean(below_b_plus, na.rm = TRUE))
 ```
 
 ### ✏️ Compute Instructor GPA
@@ -350,7 +388,12 @@ What fraction of grades are below B+?
 What's the grade-point average for each instructor? Order from low to high.
 
 ```{r}
-
+grades |>
+  left_join(gpa_conversion) |>
+  left_join(courses) |>
+  group_by(iid) |>
+  summarize(gpa = mean(gp, na.rm = TRUE)) |>
+  arrange(gpa)
 ```
 
 ### ✏️ Estimate Dept GPA
@@ -358,5 +401,15 @@ What's the grade-point average for each instructor? Order from low to high.
 CHALLENGE: Estimate the grade-point average for each department, and sort from low to high. NOTE: Don't include cross-listed courses. Students in cross-listed courses could be enrolled under either department, and we do not know which department to assign the grade to. HINT: You'll need to do multiple joins.
 
 ```{r}
+cross_listed <- courses |>
+  count(sessionID) |>
+  filter(n > 1)
 
+grades |>
+  anti_join(cross_listed) |>
+  inner_join(courses) |>
+  left_join(gpa_conversion) |>
+  group_by(dept) |>
+  summarize(gpa = mean(gp, na.rm = TRUE)) |>
+  arrange(gpa)
 ```

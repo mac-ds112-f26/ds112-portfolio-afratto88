@@ -3,3 +3,88 @@ title: "Personal Visualization Journey"
 ---
 
 Add content here
+
+#install.packages("xml2")
+
+```{r}
+
+# run this stuff once 
+# library(tidyverse)
+# 
+# headphones <- tibble(line = read_lines("headphones.xml")) |>
+#   mutate(
+#     decibels  = as.numeric(str_extract(line, '(?<=value=")[^"]+')),
+#     startDate = ymd_hms(str_extract(line, '(?<=startDate=")[^"]+')),
+#     endDate   = ymd_hms(str_extract(line, '(?<=endDate=")[^"]+')),
+#     source    = str_extract(line, '(?<=sourceName=")[^"]+')
+#   ) |>
+#   select(-line)
+# 
+# write_csv(headphones, "headphones.csv")
+```
+
+```{r}
+library(tidyverse)
+
+headphones <- read_csv("headphones.csv")
+
+nrow(headphones)
+head(headphones)
+summary(headphones$decibels)
+```
+```{r}
+# Adding useful time variables:
+headphones <- headphones |>
+  mutate(
+    date        = as_date(startDate),
+    year        = year(startDate),
+    month       = month(startDate, label = TRUE),
+    day_of_week = wday(startDate, label = TRUE),
+    hour        = hour(startDate),
+    loud        = decibels > 80
+  )
+```
+
+```{r}
+# Has my listening volume changed over the years? 
+ggplot(headphones, aes(x = factor(year), y = decibels)) +
+  geom_boxplot() +
+  labs(x = "Year", y = "Headphone volume (dB)")
+```
+
+```{r}
+#Do I listen louder at certain times of day?
+headphones |>
+  group_by(hour) |>
+  summarize(avg_db = mean(decibels)) |>
+  ggplot(aes(x = hour, y = avg_db)) +
+  geom_line() +
+  geom_point() +
+  theme_classic() +
+  labs(x = "Hour of day", y = "Average volume (dB)")
+```
+```{r}
+headphones |>
+  group_by(hour) |>
+  summarize(avg_db = mean(decibels), n = n()) |>
+  ggplot(aes(x = hour, y = avg_db)) +
+  geom_line(color = "gray60") +
+  geom_point(aes(size = n), color = "steelblue") +
+  scale_x_continuous(breaks = c(0, 6, 12, 18, 23),
+                     labels = c("12am", "6am", "12pm", "6pm", "11pm")) +
+  theme_classic() +
+  geom_hline(yintercept = 80, linetype = "dashed") +
+  labs(title = "My Headphone Volume by Hour of Day",
+       subtitle = "Listening is quietest in the early morning and loudest in the early afternoon",
+       x = "Hour of day",
+       y = "Average volume (dB)",
+       size = "Number of\nrecordings",
+       caption = "Source: My Apple Health data, 2016–2026")
+```
+
+```{r}
+# Which days of the week am I loudest?
+ggplot(headphones, aes(x = day_of_week, y = decibels)) +
+  geom_boxplot() +
+  labs(x = "Day of week", y = "Headphone volume (dB)")
+```

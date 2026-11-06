@@ -142,8 +142,6 @@ enrollments <- courses_clean |>
 head(enrollments)
 ```
 
-
-
 ### ✏️ Explore Enrollment by Department
 
 Explore enrollments by department. *You* decide what research questions to focus on. Use both visual and numerical summaries.

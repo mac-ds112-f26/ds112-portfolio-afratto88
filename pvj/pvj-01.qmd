@@ -69,17 +69,18 @@ headphones |>
   summarize(avg_db = mean(decibels), n = n()) |>
   ggplot(aes(x = hour, y = avg_db)) +
   geom_line(color = "gray60") +
-  geom_point(aes(size = n), color = "steelblue") +
+  geom_point(aes(size = n), color = "hotpink") +
   scale_x_continuous(breaks = c(0, 6, 12, 18, 23),
                      labels = c("12am", "6am", "12pm", "6pm", "11pm")) +
+  #geom_vline(xintercept = c(5.5, 11.5, 16.5, 20.5), linetype = "dashed", color = "gray70") +
   theme_classic() +
-  geom_hline(yintercept = 80, linetype = "dashed") +
+  #geom_hline(yintercept = 80, linetype = "dashed") +
   labs(title = "My Headphone Volume by Hour of Day",
-       subtitle = "Listening is quietest in the early morning and loudest in the early afternoon",
+       subtitle = "I listen most often late at night and in the early morning, but that's also when my volume is lowest",
        x = "Hour of day",
        y = "Average volume (dB)",
        size = "Number of\nrecordings",
-       caption = "Source: My Apple Health data, 2016–2026")
+       caption = "Source: Anna's Apple Health data, 2016–2026")
 ```
 
 ```{r}

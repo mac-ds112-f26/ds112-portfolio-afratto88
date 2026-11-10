@@ -75,7 +75,7 @@ headphones |>
   #geom_vline(xintercept = c(5.5, 11.5, 16.5, 20.5), linetype = "dashed", color = "gray70") +
   theme_classic() +
   #geom_hline(yintercept = 80, linetype = "dashed") +
-  labs(title = "My Headphone Volume by Hour of Day",
+  labs(title = "Anna's Average Daily Headphone Volume",
        subtitle = "I listen most often late at night and in the early morning, but that's also when my volume is lowest",
        x = "Hour of day",
        y = "Average volume (dB)",

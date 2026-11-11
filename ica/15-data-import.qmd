@@ -49,7 +49,7 @@ Putting this together, use `read_csv()` with the appropriate absolute file path 
 
 ```{r}
 library(tidyverse)
-# imdb_messy <- read_csv("___")
+imdb_messy <- read_csv("~/Desktop/portfolio/ica/imdb_5000_messy.csv")
 ```
 
 ### ✏️ Check Working Directory
